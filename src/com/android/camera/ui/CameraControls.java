@@ -936,6 +936,7 @@ public class CameraControls extends RotatableLayout {
             } else {
                 mRemainingPhotosText.setText(remaining + " ");
             }
+            mRemainingPhotos.setVisibility(View.VISIBLE);
         }
         mCurrentRemaining = remaining;
     }
