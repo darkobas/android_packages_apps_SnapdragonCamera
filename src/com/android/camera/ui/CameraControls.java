@@ -21,7 +21,8 @@ import android.animation.Animator.AnimatorListener;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Paint;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 
 import org.codeaurora.snapcam.R;
 import com.android.camera.ui.ModuleSwitcher;
-import com.android.camera.ui.RotateImageView;
+import com.android.camera.ui.RotateVectorView;
 import com.android.camera.ShutterButton;
 import com.android.camera.Storage;
 import com.android.camera.util.CameraUtil;
@@ -619,10 +620,9 @@ public class CameraControls extends RotatableLayout {
                 v.setVisibility(View.VISIBLE);
             }
         ((ModuleSwitcher) mSwitcher).removePopup();
-        if (mShutter.getDrawable() instanceof AnimationDrawable) { 
-            AnimationDrawable shutterAnim = (AnimationDrawable) mShutter.getDrawable();
-            if (shutterAnim != null)
-                shutterAnim.stop();
+        if (mShutter.getDrawable() instanceof Animatable) { 
+            AnimatedVectorDrawable shutterAnim = (AnimatedVectorDrawable) mShutter.getDrawable();
+            ((AnimatedVectorDrawable) shutterAnim).reset();
         }
 
         mMenu.setVisibility(View.VISIBLE);
@@ -975,8 +975,9 @@ public class CameraControls extends RotatableLayout {
         View[] views = {
             mSceneModeSwitcher, mFilterModeSwitcher, mFrontBackSwitcher,
             TsMakeupManager.HAS_TS_MAKEUP ? mTsMakeupSwitcher : mHdrSwitcher,
-            mMenu, mShutter, mPreview, mSwitcher, mMute
+            mMenu, mPreview, mSwitcher, mMute
         };
+        ((RotateVectorView) mShutter).setOrientation(orientation, animation);
         for (View v : views) {
             ((RotateImageView) v).setOrientation(orientation, animation);
         }
