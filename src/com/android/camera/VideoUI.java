@@ -66,7 +66,6 @@ public class VideoUI implements PieRenderer.PieListener,
         PreviewGestures.SingleTapListener,
         CameraRootView.MyDisplayListener,
         SurfaceHolder.Callback,
-        PauseButton.OnPauseButtonListener,
         CameraManager.CameraFaceDetectionCallback{
     private static final String TAG = "CAM_VideoUI";
     // module fields
@@ -80,7 +79,6 @@ public class VideoUI implements PieRenderer.PieListener,
     private View mReviewDoneButton;
     private View mReviewPlayButton;
     private ShutterButton mShutterButton;
-    private PauseButton mPauseButton;
     private ModuleSwitcher mSwitcher;
     private TextView mRecordingTimeView;
     private LinearLayout mLabelsLinearLayout;
@@ -269,7 +267,6 @@ public class VideoUI implements PieRenderer.PieListener,
         initializeMiscControls();
         initializeControlByIntent();
         initializeOverlay();
-        initializePauseButton();
 
         mCameraControls = (CameraControls) mRootView.findViewById(R.id.camera_controls);
         ViewStub faceViewStub = (ViewStub) mRootView
@@ -696,11 +693,6 @@ public class VideoUI implements PieRenderer.PieListener,
         // The R.id.labels can only be found in phone layout.
         // That is, mLabelsLinearLayout should be null in tablet layout.
         mLabelsLinearLayout = (LinearLayout) mRootView.findViewById(R.id.labels);
-    }
-
-    private void initializePauseButton() {
-        mPauseButton = (PauseButton) mRootView.findViewById(R.id.video_pause);
-        mPauseButton.setOnPauseButtonListener(this);
     }
 
     public void updateOnScreenIndicators(Parameters param, ComboPreferences prefs) {
@@ -1139,26 +1131,6 @@ public class VideoUI implements PieRenderer.PieListener,
 
     public View getRootView() {
         return mRootView;
-    }
-
-     @Override
-    public void onButtonPause() {
-        mRecordingTimeView.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_pausing_indicator, 0, 0, 0);
-        mController.onButtonPause();
-    }
-
-    @Override
-    public void onButtonContinue() {
-        mRecordingTimeView.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_recording_indicator, 0, 0, 0);
-        mController.onButtonContinue();
-    }
-
-    public void resetPauseButton() {
-        mRecordingTimeView.setCompoundDrawablesWithIntrinsicBounds(
-            R.drawable.ic_recording_indicator, 0, 0, 0);
-        mPauseButton.setPaused(false);
     }
 
     public void setPreference(String key, String value) {
